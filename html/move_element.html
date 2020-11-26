@@ -14,30 +14,28 @@
     <script>
         move = false;
         moveme = document.getElementById('moveme');
-        addListenerMulti(window, 'mousedown mousemove mouseup', function(e){
-            if(e.type=='mousedown'){
-                if(e.target.id=='moveme'){
-                    move = true;
+        addListenerMulti(window, 'mousedown mouseup mousemove mouseout', function(e){
+            if(e.type=='mousedown' && e.target.id=='settings'){
+                move = true;
+                //console.log(e.layerX,e.layerY);
+            }
+            if(e.type=='mouseup' && move){
+                move = false;
+            }
+            if(e.type=='mousemove' && move){
+                moveme.style.top = `${e.pageY}px`;
+                moveme.style.left = `${e.pageX}px`;
+                if(window.innerWidth < e.pageX || window.innerHeight < e.pageY || e.pageX<=0 || e.pageY <=0){
+                    move = false
                 }
             }
-            if(e.type=='mousemove'){
-                if(move){
-                    moveme.style.top = `${e.pageY}px`;
-                    moveme.style.left = `${e.pageX}px`;
-                }
-            }
-            if(e.type=='mouseup'){
-                if(move){
-                    moveme.style.top = `${e.pageY}px`;
-                    moveme.style.left = `${e.pageX}px`;
-                    move = false;
-                }
-            }
+
         });
 
         function addListenerMulti(el, s, fn) {
             s.split(' ').forEach(e => el.addEventListener(e, fn, false));
         }
+
         
         
     </script>
